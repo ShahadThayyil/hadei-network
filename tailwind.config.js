@@ -6,27 +6,38 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['MEIRO', 'sans-serif'], // Exclusive brand typeface
-      },
+     fontFamily: {
+  sans: ['Inter', 'system-ui', 'sans-serif'],
+  display: ['MEIRO', 'sans-serif'],
+},
       colors: {
+        // Core Brand Colors
         hadei: {
-          yellow: '#F5F216', // Signature brand color
-          black: '#000000',
-          white: '#FFFFFF',
+          yellow: '#F5F216', // Primary Yellow
+          black: '#000000',  // Structural Black
+          white: '#FFFFFF',  // Base White
         },
+        // Extended Palette
         surface: {
-          light: '#F8F8F8', // Container background
-          border: '#000000', // Bold border style
+          soft: '#FFFDE8',   // Soft Yellow
+          light: '#F8F8F8',  // Light Gray
+          border: '#EAEAEA', // Border Gray
         },
+        // State Colors
         state: {
-          error: '#EF4444',
+          success: '#16A34A', // Success Green
+          warning: '#F59E0B', // Warning Orange
+          error: '#EF4444',   // Error Red
         }
       },
       borderRadius: {
-        'xs': '8px',
-        'md': '16px',
-        'xl': '24px', // Standard HADEI card radius
+        // Soft geometric corners
+        'xs': '8px',    // Tags and compact elements
+        'sm': '12px',   // Dropdowns and small containers
+        'md': '16px',   // Buttons and input fields
+        'lg': '20px',   // Profile components
+        'xl': '24px',   // Cards, panels, and major containers
+        'full': '999px',// Avatars, pills, and circular actions
       },
     },
   },

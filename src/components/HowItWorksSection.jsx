@@ -1,82 +1,91 @@
 const steps = [
   {
     number: '01',
-    title: 'Build Your Profile',
+    title: 'Profile & Vetting',
     description:
-      'Showcase your portfolio, claim your style badges, and set your availability. Your work speaks for itself.',
+      'Submit your portfolio for review. Once your capabilities are verified by our team, build your professional profile and set your availability.',
     forFreelancer: true,
   },
   {
     number: '02',
-    title: 'Get Matched',
+    title: 'Targeted Matching',
     description:
-      'Our feel-based matching pairs clients with creatives who share their aesthetic vision — not just skills.',
+      'Clients are paired directly with vetted creatives based on precise project requirements, ensuring capability, reliability, and exact skill fit.',
     forFreelancer: false,
   },
   {
     number: '03',
-    title: 'Deliver with Confidence',
+    title: 'Structured Delivery',
     description:
-      'Escrow-backed payments, structured milestones, and a clear revision process protect everyone.',
+      'Execute projects with clear milestone tracking, defined revision protocols, and secure payments to protect both time and capital.',
     forFreelancer: true,
   },
   {
     number: '04',
-    title: 'Grow Together',
+    title: 'Long-term Growth',
     description:
-      'Reviews, performance scores, and community features help you level up after every project.',
+      'Build lasting professional relationships. Top performance unlocks premium tier projects and dedicated recurring client accounts.',
     forFreelancer: false,
   },
 ]
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="bg-black py-32 border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section header */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="h-px w-10 bg-yellow-400" />
-          <span className="text-yellow-400 text-xs font-bold tracking-[0.3em] uppercase">Process</span>
-        </div>
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
-          <h2 className="text-5xl md:text-6xl font-black text-white leading-tight">
-            How It<br />
-            <span className="text-yellow-400">Works</span>
-          </h2>
-          <p className="text-white/40 max-w-sm text-sm leading-relaxed md:text-right">
-            From discovery to delivery, every step is designed to build trust between creators and clients.
-          </p>
+    // Used surface-light to subtly separate this section from the white Hero section
+    <section id="how-it-works" className="bg-surface-light py-24 md:py-32 border-t-2 border-hadei-black font-sans">
+      
+      {/* Enforced 1440px max width and standard padding */}
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16">
+        
+        {/* Section Header */}
+        <div className="mb-16 md:mb-24">
+          
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <h2 className="text-4xl md:text-[56px] font-extrabold text-hadei-black leading-[1.1] tracking-tight">
+              Built for <span className="bg-hadei-yellow px-2 inline-block mt-2 md:mt-0">Reliability.</span>
+            </h2>
+            <p className="text-hadei-black text-base md:text-lg font-medium max-w-md leading-relaxed md:text-right">
+              From discovery to final delivery, every workflow step is engineered to build absolute trust between creators and clients.
+            </p>
+          </div>
         </div>
 
-        {/* Steps grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
-          {steps.map((step, i) => (
+        {/* Steps Grid - Uses 8-pt gap scale (gap-8 = 32px) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.map((step) => (
             <div
               key={step.number}
-              className="relative p-8 border-t border-r border-white/10 first:border-l group hover:bg-white/[0.02] transition-colors duration-300"
+              // Standard HADEI Card: White bg, Black border, 24px radius
+              className="bg-hadei-white border-2 border-hadei-black rounded-xl p-8 flex flex-col hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-300"
             >
-              {/* Step number */}
-              <div className="text-6xl font-black text-white/5 group-hover:text-yellow-400/10 transition-colors duration-300 mb-6 leading-none">
+              {/* Step Number block - Uses HADEI Yellow for highlights */}
+              <div className="w-16 h-16 bg-hadei-yellow border-2 border-hadei-black rounded-md flex items-center justify-center text-2xl font-black text-hadei-black mb-8 shrink-0">
                 {step.number}
               </div>
 
-              {/* Tag */}
-              <div className={`inline-block text-xs font-bold tracking-widest uppercase px-2.5 py-1 mb-4 ${step.forFreelancer ? 'bg-yellow-400/10 text-yellow-400' : 'bg-white/10 text-white/50'}`}>
-                {step.forFreelancer ? 'Freelancer' : 'Client'}
+              {/* Tag - Functional indicator using extended palette borders */}
+              <div className="mb-4">
+                <span className={`inline-block text-xs font-bold tracking-widest uppercase px-3 py-1.5 border-2 rounded-sm ${
+                  step.forFreelancer 
+                    ? 'border-hadei-yellow bg-surface-soft text-hadei-black' 
+                    : 'border-hadei-black bg-hadei-black text-hadei-white'
+                }`}>
+                  {step.forFreelancer ? 'For Talent' : 'For Clients'}
+                </span>
               </div>
 
-              <h3 className="text-white font-bold text-lg mb-3 leading-tight">{step.title}</h3>
-              <p className="text-white/40 text-sm leading-relaxed">{step.description}</p>
-
-              {/* Connector arrow (desktop) */}
-              {i < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 z-10 text-yellow-400/30 text-xl">
-                  →
-                </div>
-              )}
+              <h3 className="text-hadei-black font-bold text-xl mb-4 leading-tight">
+                {step.title}
+              </h3>
+              
+              <p className="text-hadei-black font-medium text-sm leading-relaxed flex-grow">
+                {step.description}
+              </p>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   )
