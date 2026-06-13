@@ -68,7 +68,7 @@ export default function FreelancerOnboarding() {
   }
 
   const handleSubmit = () => {
-    navigate('/tutorial/freelancer')
+    navigate('/freelancer/tutorial')
   }
 
   // Dynamic Array Handlers
@@ -509,7 +509,7 @@ export default function FreelancerOnboarding() {
                     onClick={handleSubmit} 
                     className="flex justify-center items-center gap-2 w-full sm:w-auto bg-[#F5F216] text-black text-sm font-bold px-8 py-3 rounded-md hover:brightness-95 transition-colors "
                   >
-                    Complete Setup & Go To Dashboard <CheckCircle size={18} />
+                    Complete Setup & Go To Tutorial <CheckCircle size={18} />
                   </button>
                 </div>
               </div>

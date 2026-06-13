@@ -1,212 +1,379 @@
-import { useState } from 'react'
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { 
   Home, 
-  Briefcase, 
-  Search, 
+  FolderGit2, 
   MessageSquare, 
-  CreditCard, 
-  User, 
-  Bell, 
-  HelpCircle, 
-  Menu, 
+  Activity, 
+  Compass, 
+  Wallet, 
+  Briefcase, 
+  LayoutGrid, 
   X, 
-  ChevronDown,
+  Bell, 
   Hash,
-  Clock,
-  Compass
+  LogOut,
+  Moon
 } from 'lucide-react'
 
 export default function FreelancerLayout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
+  
+  const notifRef = useRef(null)
 
-  // Primary Nav Items (Far Left Rail)
-  const primaryNav = [
-    { id: 'home', icon: Home, path: '/dashboard/freelancer', label: 'Home' },
-    { id: 'jobs', icon: Briefcase, path: '/dashboard/freelancer/my-jobs', label: 'My Jobs' },
-    { id: 'discover', icon: Compass, path: '/dashboard/freelancer/other-jobs', label: 'Discover' },
-    { id: 'chats', icon: MessageSquare, path: '/dashboard/freelancer/chats', label: 'Chats' },
-    { id: 'finance', icon: CreditCard, path: '/dashboard/freelancer/payments', label: 'Payments' },
-  ]
-
-  // Secondary Nav Items (Wider Sidebar Menu)
-  const menuSections = [
-    {
-      title: 'Platform',
-      items: [
-        { label: 'Dashboard', path: '/dashboard/freelancer', icon: Hash },
-        { label: 'Platform Jobs', path: '/dashboard/freelancer/jobs', icon: Hash },
-        { label: 'Community Posts', path: '/dashboard/freelancer/posts', icon: Hash },
-      ]
-    },
-    {
-      title: 'Job Tracking',
-      items: [
-        { label: 'Applied Jobs', path: '/dashboard/freelancer/applied', icon: Hash },
-        { label: 'My Uploaded Jobs', path: '/dashboard/freelancer/my-jobs', icon: Hash },
-        { label: 'Peer Jobs', path: '/dashboard/freelancer/other-jobs', icon: Hash },
-      ]
+  // Close notifications when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setIsNotificationOpen(false)
+      }
     }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleLogout = () => {
+    navigate('/login')
+  }
+
+  // --- NAVIGATION LISTS ---
+  const topNav = [
+    { id: 'home', icon: Home, path: '/freelancer/dashboard/home', label: 'Home' },
+    { id: 'projects', icon: FolderGit2, path: '/freelancer/dashboard/projects', label: 'Projects' },
+    { id: 'chats', icon: MessageSquare, path: '/freelancer/dashboard/messages', label: 'Chats' },
+    { id: 'status', icon: Activity, path: '/freelancer/dashboard/status', label: 'Status' },
   ]
+
+  const bottomNav = [
+    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/other-jobs', label: 'Discover' },
+    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/my-jobs', label: 'My Jobs' },
+    { id: 'wallet', icon: Wallet, path: '/freelancer/dashboard/payments', label: 'Wallet' },
+  ]
+
+  const mobileBottomNav = [
+    { id: 'home', icon: Home, path: '/freelancer/dashboard/home', label: 'Home' },
+    { id: 'chats', icon: MessageSquare, path: '/freelancer/dashboard/messages', label: 'Chats' },
+    { id: 'profile', icon: null, path: '/freelancer/dashboard/profile', label: 'Profile' },
+  ]
+
+  const mobileDrawerNav = [
+    { id: 'projects', icon: FolderGit2, path: '/freelancer/dashboard/projects', label: 'Projects' },
+    { id: 'status', icon: Activity, path: '/freelancer/dashboard/status', label: 'Status' },
+    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/other-jobs', label: 'Discover' },
+    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/my-jobs', label: 'My Jobs' },
+    { id: 'wallet', icon: Wallet, path: '/freelancer/dashboard/payments', label: 'Wallet' },
+  ]
+
+  // Dummy Notifications
+  const notifications = [
+    { id: 1, text: 'TechNova Solutions accepted your proposal!', time: '10m ago', unread: true },
+    { id: 2, text: 'New message from Elevate Commerce', time: '1h ago', unread: true },
+    { id: 3, text: 'Your milestone was approved.', time: '2d ago', unread: false },
+  ]
+
+  // Helper to determine active route (Fixed to support both exact /home and root dashboard path)
+const isRouteActive = (path) => {
+    const currentPath = location.pathname.replace(/\/$/, '') // Remove trailing slash if any
+    
+    if (path === '/freelancer/dashboard/home') {
+      // Makes it active for exactly /dashboard, exactly /home, AND any nested routes like /home/jobs/123
+      return currentPath === '/freelancer/dashboard' || currentPath.startsWith('/freelancer/dashboard/home')
+    }
+    return currentPath.startsWith(path)
+  }
+
+  // Helper to get current page title for the top bar
+  const getCurrentPageTitle = () => {
+    const allLinks = [...topNav, ...bottomNav, { path: '/freelancer/dashboard/profile', label: 'Profile' }]
+    const activeLink = allLinks.find(link => isRouteActive(link.path))
+    return activeLink ? activeLink.label : 'Platform'
+  }
+
+  const profilePic = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=100&auto=format&fit=crop"
 
   return (
-    <div className="h-screen w-full flex flex-col bg-white overflow-hidden font-sans">
+    <div className="flex h-screen w-full bg-white font-sans overflow-hidden border-none">
       
-      {/* ==================== TOP COMMAND BAR ==================== */}
-      <header className="flex-shrink-0 h-12 w-full bg-[#111111] flex items-center justify-between px-4 z-50">
+      {/* ==================== DESKTOP PLATFORM SIDEBAR (FIXED THIN RAIL) ==================== */}
+      <aside className="hidden md:flex flex-col w-[76px] h-full bg-[#111111] shrink-0 border-r border-[#222222] py-4 items-center z-50 overflow-hidden">
         
-        {/* Left: Mobile Menu Toggle & Spacer */}
-        <div className="flex items-center w-1/4">
-          <button 
-            className="md:hidden text-gray-300 hover:text-white mr-4 transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-          <div className="hidden md:flex items-center gap-4 text-gray-400">
-            <Clock size={16} className="cursor-pointer hover:text-white transition-colors" />
-          </div>
-        </div>
-
-        {/* Center: Global Search (Slack Style) */}
-        <div className="flex-1 max-w-2xl flex justify-center">
-          <div className="w-full max-w-xl bg-[#2A2A2A] border border-gray-700 rounded-md flex items-center px-3 py-1 hover:bg-[#333333] transition-colors focus-within:bg-[#333333] focus-within:border-gray-500">
-            <Search size={14} className="text-gray-400 mr-2 shrink-0" />
-            <input 
-              type="text" 
-              placeholder="Search jobs, messages, or files..." 
-              className="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-gray-400"
-            />
-          </div>
-        </div>
-
-        {/* Right: Actions & Profile */}
-        <div className="flex items-center justify-end w-1/4 gap-4">
-          <HelpCircle size={18} className="text-gray-400 cursor-pointer hover:text-white transition-colors hidden sm:block" />
-          <div className="relative">
-            <Bell size={18} className="text-gray-400 cursor-pointer hover:text-white transition-colors" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#F5F216] rounded-full border border-[#111111]"></span>
-          </div>
-        </div>
-      </header>
-
-      {/* ==================== MAIN WORKSPACE ==================== */}
-      <div className="flex-1 flex overflow-hidden">
-        
-        {/* 1. FAR LEFT PRIMARY RAIL (Hidden on mobile) */}
-        <nav className="hidden md:flex flex-col items-center w-[70px] bg-[#111111] border-t border-[#222222] py-4 z-40">
-          
-          {/* Minimal Icon Logo */}
-          <div className="w-10 h-10 bg-[#222222] rounded-md flex items-center justify-center mb-6 cursor-pointer hover:bg-[#333333] transition-colors border border-gray-800">
-            <span className="font-bold text-lg text-[#F5F216]">H</span>
-          </div>
-
-          {/* Vertical Nav Icons */}
-          <div className="flex flex-col gap-4 flex-1 w-full items-center">
-            {primaryNav.map((item) => {
-              // Ensure perfect active state matching
-              const isActive = location.pathname === item.path || (item.id !== 'home' && location.pathname.startsWith(item.path))
-              return (
-                <Link 
-                  key={item.id} 
-                  to={item.path}
-                  className="group relative flex flex-col items-center justify-center w-full"
-                >
-                  <div className={`w-10 h-10 rounded-md flex items-center justify-center transition-colors ${
-                    isActive 
-                      ? 'bg-[#2A2A2A] text-white border border-gray-700' 
-                      : 'text-gray-400 hover:bg-[#222222] hover:text-gray-200'
-                  }`}>
-                    <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  </div>
-                  {/* Tooltip */}
-                  <span className="absolute left-14 bg-black text-white text-xs px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
-                    {item.label}
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
-
-          {/* Bottom Profile Settings */}
-          <Link to="/dashboard/freelancer/profile" className="mt-auto group relative w-full flex justify-center">
-            <div className="w-10 h-10 rounded-md bg-[#222222] flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#333333] transition-colors">
-              <User size={20} />
-            </div>
-            <span className="absolute left-14 bg-black text-white text-xs px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
-              Profile
-            </span>
-          </Link>
-        </nav>
-
-        {/* 2. SECONDARY SIDEBAR MENU (Slack Channels Style) */}
-        <aside className={`absolute md:relative w-64 h-full bg-[#1A1A1A] border-r border-[#222222] flex flex-col transition-transform duration-300 z-30 ${
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}>
-          
-          {/* Workspace Header with Brand Logo */}
-          <div className="h-14 flex items-center justify-between px-4 border-b border-[#222222] cursor-pointer hover:bg-[#222222] transition-colors">
-            <img
-              src="https://res.cloudinary.com/dmtzmgbkj/image/upload/v1780479006/f_webp/WhatsApp_Image_2026-05-22_at_2.18.05_PM__1_-removebg-preview_befo5g.png"
-              alt="Hadei Network"
-              className="h-6 w-auto object-contain filter invert opacity-90" // Inverted to look good on dark background
-            />
-            <ChevronDown size={16} className="text-gray-400" />
-          </div>
-
-          {/* Scrollable Menu Items */}
-          <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
-            {menuSections.map((section, idx) => (
-              <div key={idx} className="mb-6">
-                <div className="px-4 flex items-center justify-between mb-1 group cursor-pointer">
-                  <h3 className="text-xs font-semibold text-gray-400 tracking-wider uppercase group-hover:text-gray-300 transition-colors">
-                    {section.title}
-                  </h3>
-                </div>
-                <ul className="flex flex-col gap-0.5">
-                  {section.items.map((item, itemIdx) => {
-                    const isItemActive = location.pathname === item.path
-                    return (
-                      <li key={itemIdx}>
-                        <Link 
-                          to={item.path}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className={`flex items-center gap-2 px-4 py-1.5 mx-2 rounded-md text-sm transition-colors ${
-                            isItemActive 
-                              ? 'bg-[#F5F216]/10 text-[#F5F216] font-medium' 
-                              : 'text-gray-300 hover:bg-[#2A2A2A]'
-                          }`}
-                        >
-                          <item.icon size={14} className={isItemActive ? 'text-[#F5F216]' : 'text-gray-500'} />
-                          <span className="truncate">{item.label}</span>
-                        </Link>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </aside>
-
-        {/* Mobile Overlay Background */}
-        {isMobileMenuOpen && (
-          <div 
-            className="fixed inset-0 bg-black/50 z-20 md:hidden"
-            onClick={() => setIsMobileMenuOpen(false)}
+        {/* Adjusted Logo */}
+        <div className="mb-4 px-2 flex justify-center w-full mt-1">
+          <img
+            src="https://res.cloudinary.com/dmtzmgbkj/image/upload/v1780479006/f_webp/WhatsApp_Image_2026-05-22_at_2.18.05_PM__1_-removebg-preview_befo5g.png"
+            alt="Hadei Network"
+            className="w-10 h-10 object-contain filter invert opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
           />
-        )}
+        </div>
 
-        {/* 3. MAIN CONTENT AREA */}
-        <main className="flex-1 h-full overflow-y-auto bg-white relative">
-          <div className="min-h-full">
-            {/* The individual page components (Home, Jobs, Chats) render here */}
-            <Outlet />
+        {/* Top Navigation Area */}
+        <div className="flex flex-col gap-2 w-full px-2 mt-2">
+          {topNav.map((item) => {
+            const isActive = isRouteActive(item.path)
+            return (
+              <Link 
+                key={item.id} 
+                to={item.path}
+                className={`w-full h-12 flex flex-col items-center justify-center rounded-sm transition-colors relative ${
+                  isActive ? 'bg-[#2A2D31] text-white' : 'text-gray-400 hover:bg-[#222222] hover:text-gray-200'
+                }`}
+                title={item.label}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-3/4 bg-[#F5F216] rounded-r-sm"></div>
+                )}
+                <item.icon 
+                  size={18} 
+                  className={isActive ? 'text-white' : 'text-gray-400'} 
+                  strokeWidth={isActive ? 2.5 : 2} 
+                />
+                <span className={`text-[9px] mt-1 tracking-wide ${isActive ? 'font-bold text-white' : 'font-medium'}`}>
+                  {item.label}
+                </span>
+              </Link>
+            )
+          })}
+        </div>
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Bottom Navigation Area */}
+        <div className="flex flex-col gap-2 w-full px-2">
+          {bottomNav.map((item) => {
+            const isActive = isRouteActive(item.path)
+            return (
+              <Link 
+                key={item.id} 
+                to={item.path}
+                className={`w-full h-12 flex flex-col items-center justify-center rounded-sm transition-colors relative ${
+                  isActive ? 'bg-[#2A2D31] text-white' : 'text-gray-400 hover:bg-[#222222] hover:text-gray-200'
+                }`}
+                title={item.label}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-3/4 bg-[#F5F216] rounded-r-sm"></div>
+                )}
+                <item.icon 
+                  size={18} 
+                  className={isActive ? 'text-white' : 'text-gray-400'} 
+                  strokeWidth={isActive ? 2.5 : 2} 
+                />
+                <span className={`text-[9px] mt-1 tracking-wide ${isActive ? 'font-bold text-white' : 'font-medium'}`}>
+                  {item.label}
+                </span>
+              </Link>
+            )
+          })}
+        </div>
+
+        {/* Theme Switcher & Profile with extra spacing */}
+        <div className="w-full flex flex-col items-center gap-5 mt-auto pt-16 px-2 pb-4 border-t border-[#222222]/50">
+          <button className="w-9 h-9 rounded-sm bg-[#1A1A1A] hover:bg-[#2A2D31] text-gray-400 hover:text-white transition-colors flex items-center justify-center">
+            <Moon size={16} />
+          </button>
+          
+          <Link 
+            to="/freelancer/dashboard/profile"
+            className="w-full flex items-center justify-center relative group"
+            title="Profile"
+          >
+             {isRouteActive('/freelancer/dashboard/profile') && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-[#F5F216] rounded-r-sm z-10"></div>
+              )}
+            <img 
+              src={profilePic} 
+              alt="Profile" 
+              className={`w-9 h-9 rounded-full object-cover border-2 transition-colors ${
+                isRouteActive('/freelancer/dashboard/profile') ? 'border-white' : 'border-transparent group-hover:border-gray-500'
+              }`} 
+            />
+          </Link>
+        </div>
+      </aside>
+
+      {/* ==================== MAIN CONTENT WRAPPER ==================== */}
+      <div className="flex-1 flex flex-col min-w-0 bg-white pb-16 md:pb-0 h-full overflow-hidden"> 
+        
+        {/* Platform "Channel" Header */}
+        <header className="flex-shrink-0 h-14 w-full bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30">
+          
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Toggle */}
+            <button 
+              className="md:hidden text-gray-600 hover:text-black transition-colors p-1"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <LayoutGrid size={24} />
+            </button>
+            
+            {/* Logo in top bar for mobile */}
+            <div className="md:hidden flex items-center mr-2">
+              <img
+                src="https://res.cloudinary.com/dmtzmgbkj/image/upload/v1780479006/f_webp/WhatsApp_Image_2026-05-22_at_2.18.05_PM__1_-removebg-preview_befo5g.png"
+                alt="Hadei Network"
+                className="h-6 w-auto object-contain"
+              />
+            </div>
+
+            {/* Title for Desktop */}
+            <div className="hidden md:flex items-center gap-2 text-black">
+              <Hash size={18} className="text-gray-400" />
+              <h2 className="text-base sm:text-lg font-bold tracking-tight">
+                {getCurrentPageTitle()}
+              </h2>
+            </div>
           </div>
+
+          <div className="flex items-center gap-4 relative" ref={notifRef}>
+            <button 
+              onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+              className={`relative p-2 rounded-sm transition-colors ${isNotificationOpen ? 'bg-gray-100 text-black' : 'text-gray-500 hover:text-black hover:bg-gray-50'}`}
+            >
+              <Bell size={18} />
+              {notifications.some(n => n.unread) && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#F5F216] rounded-full border border-white"></span>
+              )}
+            </button>
+
+            {/* Notification Panel (No Shadows) */}
+            {isNotificationOpen && (
+              <div className="absolute top-12 right-0 w-80 bg-white border border-gray-200 rounded-sm z-50 flex flex-col">
+                <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+                  <h3 className="text-sm font-bold text-black">Notifications</h3>
+                  <button className="text-xs text-blue-600 hover:underline">Mark all read</button>
+                </div>
+                <div className="max-h-[300px] overflow-y-auto custom-scrollbar flex flex-col">
+                  {notifications.map((notif) => (
+                    <div key={notif.id} className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${notif.unread ? 'bg-gray-50/50' : ''}`}>
+                      <div className="flex items-start gap-3">
+                        <div className="mt-1 shrink-0">
+                          {notif.unread ? (
+                            <div className="w-2 h-2 bg-[#F5F216] rounded-full"></div>
+                          ) : (
+                            <div className="w-2 h-2 bg-transparent"></div>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`text-sm ${notif.unread ? 'font-semibold text-black' : 'text-gray-700'}`}>{notif.text}</p>
+                          <span className="text-xs text-gray-400 mt-1 block">{notif.time}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button className="px-4 py-3 text-xs font-bold text-center text-gray-500 hover:text-black hover:bg-gray-50 transition-colors border-t border-gray-200">
+                  View All Notifications
+                </button>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Dynamic Page Content */}
+        <main className="flex-1 overflow-y-auto bg-gray-50/50 relative custom-scrollbar h-full">
+          <Outlet />
         </main>
 
       </div>
+
+      {/* ==================== MOBILE BOTTOM NAV (Instagram Style) ==================== */}
+      <nav className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-white border-t border-gray-200 flex items-center justify-around px-2 z-50 pb-safe">
+        {mobileBottomNav.map((item) => {
+          const isActive = isRouteActive(item.path)
+          
+          return (
+            <Link 
+              key={item.id} 
+              to={item.path}
+              className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${
+                isActive ? 'text-black' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              {item.id === 'profile' ? (
+                <div className={`rounded-full p-[2px] ${isActive ? 'border border-black' : 'border border-transparent'}`}>
+                  <img 
+                    src={profilePic} 
+                    alt="Profile" 
+                    className="w-6 h-6 rounded-full object-cover" 
+                  />
+                </div>
+              ) : (
+                <item.icon 
+                  size={24} 
+                  strokeWidth={isActive ? 2.5 : 2} 
+                  className={isActive ? 'fill-black/5' : ''} 
+                />
+              )}
+            </Link>
+          )
+        })}
+      </nav>
+
+      {/* ==================== MOBILE DRAWER MENU ==================== */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex">
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          
+          <div className="relative w-[260px] h-full bg-[#111111] flex flex-col animate-in slide-in-from-left duration-300">
+            <div className="h-16 flex items-center justify-between px-5 border-b border-[#222222]">
+              <img
+                src="https://res.cloudinary.com/dmtzmgbkj/image/upload/v1780479006/f_webp/WhatsApp_Image_2026-05-22_at_2.18.05_PM__1_-removebg-preview_befo5g.png"
+                alt="Hadei Network"
+                className="h-6 w-auto object-contain filter invert opacity-90"
+              />
+              <button 
+                className="text-gray-400 hover:text-white transition-colors p-1"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-6">
+               <div className="flex flex-col gap-1">
+                  <h3 className="px-3 mb-2 text-[11px] font-bold text-gray-500 uppercase tracking-wider">Workspace</h3>
+                  {mobileDrawerNav.map(item => {
+                    const isActive = isRouteActive(item.path)
+                    return (
+                      <Link 
+                        key={item.id} 
+                        to={item.path} 
+                        onClick={() => setIsMobileMenuOpen(false)} 
+                        className={`flex items-center gap-3 px-3 py-3 rounded-lg ${isActive ? 'bg-[#222222] text-[#F5F216] font-bold' : 'text-gray-400 font-medium hover:bg-[#1A1A1A] hover:text-gray-200 transition-colors'}`}
+                      >
+                        <item.icon size={20} /> <span>{item.label}</span>
+                      </Link>
+                    )
+                  })}
+               </div>
+               
+               <div className="mt-auto flex flex-col gap-2 border-t border-[#222222] pt-6">
+                 {/* Theme Switcher Mobile */}
+                 <button 
+                   className="flex items-center gap-3 px-3 py-3 w-full rounded-lg text-gray-400 hover:text-white hover:bg-[#1A1A1A] transition-colors"
+                 >
+                   <Moon size={20} /> <span className="font-medium">Dark Mode</span>
+                 </button>
+                 
+                 <button 
+                   onClick={handleLogout}
+                   className="flex items-center gap-3 px-3 py-3 w-full rounded-lg text-gray-400 hover:text-red-400 hover:bg-[#1A1A1A] transition-colors"
+                 >
+                   <LogOut size={20} /> <span className="font-medium">Logout</span>
+                 </button>
+               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }

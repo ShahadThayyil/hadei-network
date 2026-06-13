@@ -6,10 +6,9 @@ import SignupPage from './pages/auth/SignupPage'
 import SuccessfulLogin from './pages/auth/SuccessfulLogin'
 
 // FIXED IMPORT: Directing the routing path to your newly rewritten ClientWelcomePage layout file
-import ClientWelcome from './pages/client/ClientWelcomePage' 
-import FreelancerWelcome from './pages/freelancer/FreelancerWelcomePage'
+
 import ClientOnboarding from './pages/client/ClientOnboarding' 
-import ClientWelcome from './pages/client/ClientWelcomePage'
+
 
 // Freelancer Pre-Dashboard Pages
 import FreelancerOnboarding from './pages/freelancer/FreelancerOnboarding'
@@ -19,6 +18,7 @@ import FreelancerVideoPlayer from './pages/freelancer/FreelancerVideoPlayer'
 // Freelancer Dashboard Pages
 import FreelancerLayout from './pages/freelancer/FreelancerLayout'
 import FreelancerHome from './pages/freelancer/FreelancerHome'
+import ProjectDetails from './pages/freelancer/ProjectDetails'
 
 export default function App() {
   return (
@@ -34,22 +34,16 @@ export default function App() {
 
         {/* Client Dashboard Render Target */}
         {/* Client Routes */}
-        <Route
-          path="/dashboard/client"
-          element={<ClientWelcome />}
-        />
+       
 
-        {/* Freelancer Dashboard Render Target */}
+      
+        // {/* Freelancer Pre-Dashboard Routes */}
         <Route
-          path="/dashboard/freelancer"
-          element={<FreelancerWelcome />}
-        {/* Freelancer Pre-Dashboard Routes */}
-        <Route 
-          path="/onboarding/freelancer" 
+          path="/freelancer/onboarding" 
           element={<FreelancerOnboarding />} 
         />
         <Route 
-          path="/tutorial/freelancer" 
+          path="/freelancer/tutorial" 
           element={<FreelancerTutorials />} 
         />
         <Route 
@@ -57,15 +51,28 @@ export default function App() {
           element={<FreelancerVideoPlayer />} 
         />
 
-        {/* Freelancer Dashboard Routes (Nested) */}
-        <Route path="/dashboard/freelancer" element={<FreelancerLayout />}>
-          {/* This renders FreelancerHome inside the <Outlet /> of FreelancerLayout */}
-          <Route index element={<FreelancerHome />} />
-          
-          {/* Future dashboard pages will be added here */}
-          {/* <Route path="my-jobs" element={<FreelancerMyJobs />} /> */}
-          {/* <Route path="chats" element={<FreelancerChats />} /> */}
-        </Route>
+      {/* Freelancer Dashboard Routes (Nested) */}
+<Route path="/freelancer/dashboard" element={<FreelancerLayout />}>
+  
+  {/* Automatically redirect the base dashboard path to /home */}
+  <Route index element={<Navigate to="home" replace />} />
+  
+  {/* Main Dashboard Pages */}
+  <Route path="home" element={<FreelancerHome />} />
+  
+  {/* Job Details Page */}
+  <Route path="home/jobs/:id" element={<ProjectDetails />} />
+
+  {/* Future dashboard pages will be added here (Paths match the Sidebar) */}
+  {/* <Route path="profile" element={<FreelancerProfile />} /> */}
+  {/* <Route path="projects" element={<FreelancerProjects />} /> */}
+  {/* <Route path="messages" element={<FreelancerMessages />} /> */}
+  {/* <Route path="status" element={<FreelancerStatus />} /> */}
+  {/* <Route path="other-jobs" element={<FreelancerDiscover />} /> */}
+  {/* <Route path="my-jobs" element={<FreelancerMyJobs />} /> */}
+  {/* <Route path="payments" element={<FreelancerWallet />} /> */}
+  
+</Route>
 
         {/* Catch-all fallback routing configuration */}
         <Route path="*" element={<Navigate to="/" replace />} />

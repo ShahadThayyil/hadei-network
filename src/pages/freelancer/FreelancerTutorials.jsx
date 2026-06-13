@@ -30,6 +30,7 @@ export default function FreelancerTutorials() {
 
   const handleExpertSubmit = () => {
     // Submit logic here
+    navigate('/freelancer/dashboard/home')
     setIsModalOpen(false)
     setExpertRequestText('')
   }

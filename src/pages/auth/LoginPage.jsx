@@ -39,15 +39,12 @@ export default function LoginPage() {
       return;
     }
 
-    // Dummy Freelancer Login
-    if (form.email === DUMMY_FREELANCER.email && form.password === DUMMY_FREELANCER.password) {
-      navigate('/dashboard/freelancer');
-    // ==========================
+
     if (
       form.email === DUMMY_FREELANCER.email &&
       form.password === DUMMY_FREELANCER.password
     ) {
-      navigate('/onboarding/freelancer');
+      navigate('/freelancer/onboarding');
       return;
     }
 
@@ -127,4 +124,4 @@ export default function LoginPage() {
       </form>
     </AuthLayout>
   );
-}
+} 
