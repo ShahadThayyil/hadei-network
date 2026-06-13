@@ -105,7 +105,7 @@ const isRouteActive = (path) => {
           <img
             src="https://res.cloudinary.com/dmtzmgbkj/image/upload/v1780479006/f_webp/WhatsApp_Image_2026-05-22_at_2.18.05_PM__1_-removebg-preview_befo5g.png"
             alt="Hadei Network"
-            className="w-10 h-10 object-contain filter invert opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
+            className="w-14 h-10 object-contain filter invert opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
           />
         </div>
 

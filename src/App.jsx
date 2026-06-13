@@ -19,6 +19,9 @@ import FreelancerVideoPlayer from './pages/freelancer/FreelancerVideoPlayer'
 import FreelancerLayout from './pages/freelancer/FreelancerLayout'
 import FreelancerHome from './pages/freelancer/FreelancerHome'
 import ProjectDetails from './pages/freelancer/ProjectDetails'
+import MyProjects from './pages/freelancer/MyProjects'
+import RequestCoworker from './pages/freelancer/RequestCoWorker'
+import FreelancerChats from './pages/freelancer/FreelancerChats'
 
 export default function App() {
   return (
@@ -64,8 +67,12 @@ export default function App() {
   <Route path="home/jobs/:id" element={<ProjectDetails />} />
 
   {/* Future dashboard pages will be added here (Paths match the Sidebar) */}
+  <Route path="projects" element={<MyProjects />} />
+  <Route path="projects/request-coworker/:id" element={<RequestCoworker />} />
+  {/* Base messages page (No chat selected) */}
+<Route path="messages" element={<FreelancerChats />} />
+<Route path="messages/:chatId" element={<FreelancerChats />} />
   {/* <Route path="profile" element={<FreelancerProfile />} /> */}
-  {/* <Route path="projects" element={<FreelancerProjects />} /> */}
   {/* <Route path="messages" element={<FreelancerMessages />} /> */}
   {/* <Route path="status" element={<FreelancerStatus />} /> */}
   {/* <Route path="other-jobs" element={<FreelancerDiscover />} /> */}
