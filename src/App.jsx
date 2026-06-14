@@ -22,6 +22,10 @@ import ProjectDetails from './pages/freelancer/ProjectDetails'
 import MyProjects from './pages/freelancer/MyProjects'
 import RequestCoworker from './pages/freelancer/RequestCoWorker'
 import FreelancerChats from './pages/freelancer/FreelancerChats'
+import JobStatus from './pages/freelancer/JobStatus'
+import Collaboration from './pages/freelancer/Collaboration'
+import CollaborationDetails from './pages/freelancer/CollaborationDetails'
+import MyPostedCollabs from './pages/freelancer/MyPostedCollabs'
 
 export default function App() {
   return (
@@ -65,13 +69,14 @@ export default function App() {
   
   {/* Job Details Page */}
   <Route path="home/jobs/:id" element={<ProjectDetails />} />
-
-  {/* Future dashboard pages will be added here (Paths match the Sidebar) */}
   <Route path="projects" element={<MyProjects />} />
   <Route path="projects/request-coworker/:id" element={<RequestCoworker />} />
-  {/* Base messages page (No chat selected) */}
 <Route path="messages" element={<FreelancerChats />} />
 <Route path="messages/:chatId" element={<FreelancerChats />} />
+<Route path="job-status" element={<JobStatus />} />
+<Route path="collaboration" element={<Collaboration />} />
+<Route path="collaboration/:collabId" element={<CollaborationDetails />} />
+<Route path="posted-collabs" element={<MyPostedCollabs />} />
   {/* <Route path="profile" element={<FreelancerProfile />} /> */}
   {/* <Route path="messages" element={<FreelancerMessages />} /> */}
   {/* <Route path="status" element={<FreelancerStatus />} /> */}
