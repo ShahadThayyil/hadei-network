@@ -34,8 +34,10 @@ export default function CollaborationDetails() {
       type: 'Fixed Price',
       deadline: 'Nov 10, 2026',
       postedAt: '2 hours ago',
-      applicants: 4,
-      skills: ['React', 'Tailwind CSS', 'Redux', 'Next.js', 'REST APIs'],
+      timeLeft: '5 hours, 30 mins',
+      isClosed: false,
+      maxApplicants: 10,
+      appliedCount: 4,
       description: `I am currently handling a large-scale e-commerce redesign and need another frontend developer to help me integrate the product listing and checkout flows to meet a tight deadline. \n\nThe backend API is already complete and fully documented via Swagger. The design system is established in Figma, and the base Next.js repository is already configured with Tailwind CSS.\n\nYour primary responsibilities will be:\n- Building the dynamic product grid with filtering and sorting capabilities.\n- Implementing the multi-step checkout flow (Cart -> Shipping -> Payment -> Success).\n- Ensuring 100% mobile responsiveness for these specific pages.\n\nI am looking to split the workload fairly. The total project budget is ₹1,50,000, and I am offering a 30% cut for this specific scope of work.`,
       requirements: [
         'Must have at least 2 years of experience with React and Next.js.',
@@ -60,8 +62,10 @@ export default function CollaborationDetails() {
       type: 'Milestone Based',
       deadline: 'Oct 30, 2026',
       postedAt: '5 hours ago',
-      applicants: 2,
-      skills: ['Node.js', 'PostgreSQL', 'Redis', 'SQL'],
+      timeLeft: '2 days',
+      isClosed: false,
+      maxApplicants: 5,
+      appliedCount: 2,
       description: `My current queries are too slow for the scale of data the client is expecting. I need a backend specialist to write optimized raw SQL queries and implement Redis caching to handle heavy read loads.\n\nYou will be working directly with the existing Node.js monolithic architecture.`,
       requirements: [
         'Expertise in PostgreSQL optimization and indexing.',
@@ -83,8 +87,10 @@ export default function CollaborationDetails() {
       type: 'Hourly',
       deadline: 'Oct 25, 2026',
       postedAt: '1 day ago',
-      applicants: 8,
-      skills: ['GSAP', 'HTML/CSS', 'JavaScript'],
+      timeLeft: 'Closed',
+      isClosed: true,
+      maxApplicants: 15,
+      appliedCount: 12,
       description: `The layout is fully built, but the client wants complex, physics-based scroll animations (pinning, horizontal scroll sections). I need an animation expert to knock this out quickly. You will not need to write structural CSS, only the GSAP timeline logic.`,
       requirements: [
         'Proven portfolio of high-end GSAP animations.',
@@ -92,7 +98,7 @@ export default function CollaborationDetails() {
         'Ability to ensure 60fps performance on mobile devices.'
       ],
       files: [
-        { id: 'f6', name: 'Animation_References.mp4', size: '12 MB', type: 'document' } // document type fallback
+        { id: 'f6', name: 'Animation_References.mp4', size: '12 MB', type: 'document' }
       ]
     },
     {
@@ -105,8 +111,10 @@ export default function CollaborationDetails() {
       type: 'Fixed Price',
       deadline: 'Nov 05, 2026',
       postedAt: '2 days ago',
-      applicants: 1,
-      skills: ['React Native', 'Figma', 'Expo', 'Style components'],
+      timeLeft: '45 mins',
+      isClosed: false,
+      maxApplicants: 8,
+      appliedCount: 8,
       description: `I am handling the logic and API integration, but I need someone to translate the Wallet, Settings, and Profile screens from Figma into pixel-perfect React Native components.\n\nI will provide all the necessary design assets and a clean boilerplate Expo project.`,
       requirements: [
         'Pixel-perfect attention to detail from Figma to code.',
@@ -141,6 +149,9 @@ export default function CollaborationDetails() {
     )
   }
 
+  const isFull = job.appliedCount >= job.maxApplicants
+  const isUnavailable = isFull || job.isClosed
+
   return (
     <div className="w-full h-full p-4 md:p-6 lg:p-10 bg-white text-black font-sans overflow-y-auto custom-scrollbar">
       
@@ -154,10 +165,12 @@ export default function CollaborationDetails() {
           <ArrowLeft size={16} /> Back to Collaboration Hub
         </button>
 
-        <div className="flex flex-col lg:flex-row gap-12 xl:gap-20 items-start">
+        {/* Removed gap-12 here and shifted to individual column padding to allow for a clean border line */}
+        <div className="flex flex-col lg:flex-row items-start">
           
           {/* ==================== LEFT COLUMN: MAIN CONTENT ==================== */}
-          <div className="flex-1 w-full flex flex-col">
+          {/* Added lg:border-r and padding to create the vertical line divider */}
+          <div className="flex-1 w-full flex flex-col lg:border-r lg:border-gray-200 lg:pr-10 xl:pr-16">
             
             {/* Top Meta & Title */}
             <div className="mb-8">
@@ -204,18 +217,6 @@ export default function CollaborationDetails() {
               </ul>
             </div>
 
-            {/* Skills Tags */}
-            <div className="mb-10">
-              <h2 className="text-lg font-bold mb-4">Required Skills</h2>
-              <div className="flex flex-wrap gap-2">
-                {job.skills.map((skill, index) => (
-                  <span key={index} className="bg-white border border-gray-200 text-gray-800 text-xs font-bold px-4 py-2 rounded-sm">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
             {/* Attachments / Files */}
             <div className="mb-10 pt-8 border-t border-gray-200">
               <h2 className="text-lg font-bold mb-4">Project Files & References</h2>
@@ -242,12 +243,14 @@ export default function CollaborationDetails() {
           </div>
 
           {/* ==================== RIGHT COLUMN: STICKY EDITORIAL LAYOUT ==================== */}
-          <div className="w-full lg:w-[320px] xl:w-[340px] flex flex-col shrink-0 lg:sticky lg:top-8 pb-10">
+          {/* Added padding and margin to offset from the dividing line */}
+          <div className="w-full lg:w-[320px] xl:w-[340px] flex flex-col shrink-0 lg:sticky lg:top-8 pb-10 mt-10 lg:mt-0 lg:pl-10 xl:pl-16">
             
             {/* Big Budget Focus (Free Layout) */}
             <div className="mb-8">
               <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2">Offered Budget Cut</p>
-              <h2 className="text-4xl xl:text-5xl font-black text-black tracking-tighter leading-none mb-4">
+              {/* Reduced font weight here */}
+              <h2 className="text-4xl xl:text-5xl font-semibold text-black tracking-tight leading-none mb-4">
                 {job.budgetCut}
               </h2>
               
@@ -277,18 +280,37 @@ export default function CollaborationDetails() {
 
               <div className="flex items-start justify-between pb-4 border-b border-gray-100">
                 <div className="flex items-center gap-2 text-gray-500">
+                  <Clock size={16} className={job.isClosed ? 'text-red-500' : ''} />
+                  <span className="text-sm font-bold">Time Left</span>
+                </div>
+                <p className={`text-sm font-bold ${job.isClosed ? 'text-red-600' : 'text-black'}`}>
+                  {job.timeLeft}
+                </p>
+              </div>
+
+              <div className="flex items-start justify-between pb-4 border-b border-gray-100">
+                <div className="flex items-center gap-2 text-gray-500">
                   <AlertCircle size={16} />
                   <span className="text-sm font-bold">Applicants</span>
                 </div>
-                <p className="text-sm font-bold text-black">{job.applicants} People</p>
+                <p className={`text-sm font-bold ${isFull ? 'text-red-600' : 'text-black'}`}>
+                  {job.appliedCount} / {job.maxApplicants}
+                </p>
               </div>
 
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3">
-              <button className="w-full py-4 text-sm font-bold bg-black text-[#F5F216] rounded-sm hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-                Submit Proposal
+              <button 
+                disabled={isUnavailable}
+                className={`w-full py-4 text-sm font-bold rounded-sm flex items-center justify-center gap-2 transition-colors ${
+                  isUnavailable 
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                    : 'bg-black text-[#F5F216] hover:bg-gray-800'
+                }`}
+              >
+                {job.isClosed ? 'Closed' : isFull ? 'Applications Full' : 'Submit Proposal'}
               </button>
               
               <button className="w-full py-4 text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-sm hover:bg-gray-50 hover:text-black transition-colors flex items-center justify-center gap-2">

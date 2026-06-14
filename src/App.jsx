@@ -26,6 +26,9 @@ import JobStatus from './pages/freelancer/JobStatus'
 import Collaboration from './pages/freelancer/Collaboration'
 import CollaborationDetails from './pages/freelancer/CollaborationDetails'
 import MyPostedCollabs from './pages/freelancer/MyPostedCollabs'
+import EditCoworkerRequest from './pages/freelancer/EditCoworkerRequest'
+import JobApplicants from './pages/freelancer/JobApplicants'
+import ApplicantProfile from './pages/freelancer/ApplicantProfile'
 
 export default function App() {
   return (
@@ -77,12 +80,10 @@ export default function App() {
 <Route path="collaboration" element={<Collaboration />} />
 <Route path="collaboration/:collabId" element={<CollaborationDetails />} />
 <Route path="posted-collabs" element={<MyPostedCollabs />} />
-  {/* <Route path="profile" element={<FreelancerProfile />} /> */}
-  {/* <Route path="messages" element={<FreelancerMessages />} /> */}
-  {/* <Route path="status" element={<FreelancerStatus />} /> */}
-  {/* <Route path="other-jobs" element={<FreelancerDiscover />} /> */}
-  {/* <Route path="my-jobs" element={<FreelancerMyJobs />} /> */}
-  {/* <Route path="payments" element={<FreelancerWallet />} /> */}
+<Route path="posted-collabs/edit-collab/:jobId" element={<EditCoworkerRequest />} />
+<Route path="posted-collabs/applicants/:jobId" element={<JobApplicants />} />
+<Route path="posted-collabs/applicants/profile/:applicantID" element={<ApplicantProfile />} />
+
   
 </Route>
 

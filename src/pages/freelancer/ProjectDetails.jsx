@@ -79,10 +79,10 @@ The API is fully documented and ready for consumption. We do not require any bac
           <ArrowLeft size={16} /> Back to Feed
         </button>
 
-        <div className="flex flex-col lg:flex-row gap-12 xl:gap-20 items-start">
+        <div className="flex flex-col lg:flex-row items-start">
           
           {/* ==================== LEFT COLUMN: MAIN DETAILS (FREE LAYOUT) ==================== */}
-          <div className="flex-1 w-full flex flex-col">
+          <div className="flex-1 w-full flex flex-col lg:border-r lg:border-gray-200 lg:pr-10 xl:pr-16">
             
             {/* Top Meta & Title */}
             <div className="mb-8">
@@ -183,15 +183,15 @@ The API is fully documented and ready for consumption. We do not require any bac
           </div>
 
           {/* ==================== RIGHT COLUMN: STICKY EDITORIAL LAYOUT ==================== */}
-          <div className="w-full lg:w-[320px] xl:w-[340px] flex flex-col shrink-0 lg:sticky lg:top-8 pb-10">
+          <div className="w-full lg:w-[320px] xl:w-[340px] flex flex-col shrink-0 lg:sticky lg:top-8 pb-10 mt-10 lg:mt-0 lg:pl-10 xl:pl-16">
             
             {/* Clean Budget Focus */}
-            <div className="mb-8 border border-gray-200 rounded-sm p-6 bg-gray-50/50">
+            <div className="mb-8">
               <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2">Total Budget</p>
-              <h2 className="text-3xl font-semibold text-gray-900 tracking-tight">
+              <h2 className="text-3xl font-medium text-gray-900 tracking-tight">
                 {project.budget}
               </h2>
-              <div className="flex items-center gap-1.5 mt-3 text-xs font-bold text-green-700 bg-green-100/50 w-fit px-2.5 py-1 rounded-sm border border-green-200">
+              <div className="flex items-center gap-1.5 mt-3 text-xs font-bold text-green-700 bg-green-50 w-fit px-2.5 py-1 rounded-sm">
                 <ShieldCheck size={14} /> Payment Verified Escrow
               </div>
             </div>

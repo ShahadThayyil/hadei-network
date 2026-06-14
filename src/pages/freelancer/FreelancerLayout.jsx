@@ -36,7 +36,7 @@ export default function FreelancerLayout() {
   }, [])
 
   const handleLogout = () => {
-    navigate('/login')
+    navigate('/auth/login')
   }
 
   // --- NAVIGATION LISTS ---
@@ -61,9 +61,9 @@ export default function FreelancerLayout() {
 
   const mobileDrawerNav = [
     { id: 'projects', icon: FolderGit2, path: '/freelancer/dashboard/projects', label: 'Projects' },
-    { id: 'status', icon: Activity, path: '/freelancer/dashboard/status', label: 'Jobs' },
-    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/other-jobs', label: 'Collaborations' },
-    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/my-jobs', label: 'My Jobs' },
+    { id: 'status', icon: Activity, path: '/freelancer/dashboard/job-status', label: 'Jobs' },
+    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/collaboration', label: 'Collaborations' },
+    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/posted-collabs', label: 'My Jobs' },
     { id: 'wallet', icon: Wallet, path: '/freelancer/dashboard/payments', label: 'Wallet' },
   ]
 
