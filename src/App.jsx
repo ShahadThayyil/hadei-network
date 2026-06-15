@@ -5,17 +5,21 @@ import LoginPage from './pages/auth/LoginPage'
 import SignupPage from './pages/auth/SignupPage'
 import SuccessfulLogin from './pages/auth/SuccessfulLogin'
 
-// FIXED IMPORT: Directing the routing path to your newly rewritten ClientWelcomePage layout file
-
+// CLIENT PAGES
 import ClientOnboarding from './pages/client/ClientOnboarding' 
+import ClientLayout from './pages/client/ClientLayout'
+import ClientHome from './pages/client/ClientHome'
+import ClientMyJobs from './pages/client/ClientMyJobs'
+import ClientApplicants from './pages/client/ClientApplicants'
+import ClientPayment from './pages/client/ClientPayment'
+import ClientChats from './pages/client/ClientChats'
+import ClientProfile from './pages/client/ClientProfile'
+import ClientPostJob from './pages/client/ClientPostJob' // NEW PAGE
 
-
-// Freelancer Pre-Dashboard Pages
+// FREELANCER PAGES
 import FreelancerOnboarding from './pages/freelancer/FreelancerOnboarding'
 import FreelancerTutorials from './pages/freelancer/FreelancerTutorials'
 import FreelancerVideoPlayer from './pages/freelancer/FreelancerVideoPlayer'
-
-// Freelancer Dashboard Pages
 import FreelancerLayout from './pages/freelancer/FreelancerLayout'
 import FreelancerHome from './pages/freelancer/FreelancerHome'
 import ProjectDetails from './pages/freelancer/ProjectDetails'
@@ -34,33 +38,40 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignupPage />} />
         <Route path="/auth/login-success" element={<SuccessfulLogin />} />
 
-        {/* Onboarding Pipeline */}
+        {/* CLIENT DASHBOARD PIPELINE */}
         <Route path="/client/onboarding" element={<ClientOnboarding />} />
 
-        {/* Client Dashboard Render Target */}
-        {/* Client Routes */}
-       
+        <Route path="/client/dashboard" element={<ClientLayout />}>
+          <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<ClientHome />} />
+          <Route path="post" element={<ClientPostJob />} /> {/* DEDICATED POST ROUTE */}
+          <Route path="my-jobs" element={<ClientMyJobs />} />
+          <Route path="applicants/:jobId" element={<ClientApplicants />} />
+          <Route path="payments" element={<ClientPayment />} />
+          <Route path="messages" element={<ClientChats />} />
+          <Route path="profile" element={<ClientProfile />} />
+        </Route>
 
-      
-        // {/* Freelancer Pre-Dashboard Routes */}
-        <Route
-          path="/freelancer/onboarding" 
-          element={<FreelancerOnboarding />} 
-        />
-        <Route 
-          path="/freelancer/tutorial" 
-          element={<FreelancerTutorials />} 
-        />
-        <Route 
-          path="/tutorial/watch/:id" 
-          element={<FreelancerVideoPlayer />} 
-        />
+        {/* FREELANCER DASHBOARD PIPELINE */}
+        <Route path="/freelancer/onboarding" element={<FreelancerOnboarding />} />
+        <Route path="/freelancer/tutorial" element={<FreelancerTutorials />} />
+        <Route path="/tutorial/watch/:id" element={<FreelancerVideoPlayer />} />
 
+        <Route path="/freelancer/dashboard" element={<FreelancerLayout />}>
+          <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<FreelancerHome />} />
+          <Route path="home/jobs/:id" element={<ProjectDetails />} />
+          <Route path="projects" element={<MyProjects />} />
+          <Route path="projects/request-coworker/:id" element={<RequestCoworker />} />
+          <Route path="messages" element={<FreelancerChats />} />
+          <Route path="messages/:chatId" element={<FreelancerChats />} />
+        </Route>
       {/* Freelancer Dashboard Routes (Nested) */}
 <Route path="/freelancer/dashboard" element={<FreelancerLayout />}>
   
@@ -87,7 +98,6 @@ export default function App() {
   
 </Route>
 
-        {/* Catch-all fallback routing configuration */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
