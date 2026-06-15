@@ -63,15 +63,7 @@ export default function App() {
         <Route path="/freelancer/tutorial" element={<FreelancerTutorials />} />
         <Route path="/tutorial/watch/:id" element={<FreelancerVideoPlayer />} />
 
-        <Route path="/freelancer/dashboard" element={<FreelancerLayout />}>
-          <Route index element={<Navigate to="home" replace />} />
-          <Route path="home" element={<FreelancerHome />} />
-          <Route path="home/jobs/:id" element={<ProjectDetails />} />
-          <Route path="projects" element={<MyProjects />} />
-          <Route path="projects/request-coworker/:id" element={<RequestCoworker />} />
-          <Route path="messages" element={<FreelancerChats />} />
-          <Route path="messages/:chatId" element={<FreelancerChats />} />
-        </Route>
+       
       {/* Freelancer Dashboard Routes (Nested) */}
 <Route path="/freelancer/dashboard" element={<FreelancerLayout />}>
   
