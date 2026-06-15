@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { 
   ArrowLeft, 
   UploadCloud, 
@@ -11,8 +11,9 @@ import {
   AlertCircle
 } from 'lucide-react'
 
-export default function RequestCoworker() {
+export default function EditCoworkerRequest() {
   const navigate = useNavigate()
+  const { jobId } = useParams() // Capture the ID to know which job to edit
 
   // Form States
   const [formData, setFormData] = useState({
@@ -21,13 +22,41 @@ export default function RequestCoworker() {
     amount: '',
     type: 'Fixed Price',
     deadline: '',
-    applicationDeadline: '', // NEW FIELD
-    maxApplicants: '',       // NEW FIELD
+    applicationDeadline: '', 
+    maxApplicants: '',       
     requirements: [],
     files: []
   })
 
   const [reqInput, setReqInput] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  // -----------------------------
+  // SIMULATE FETCHING EXISTING DATA
+  // -----------------------------
+  useEffect(() => {
+    // In a real app, you would fetch the job details from your backend using `jobId`
+    // Here we simulate a quick network request that loads existing data
+    setTimeout(() => {
+      setFormData({
+        title: 'Frontend UI Integration for E-commerce',
+        description: 'Need another frontend developer to help me integrate the product listing and checkout flows. The backend API is already complete. Looking to split the workload to meet a tight deadline.',
+        amount: '30',
+        type: 'Fixed Price',
+        deadline: '2026-11-10',
+        applicationDeadline: '2026-10-20',
+        maxApplicants: '10',
+        requirements: [
+          'Must have at least 2 years of experience with React.',
+          'Strong understanding of global state management.'
+        ],
+        files: [
+          { id: 'f1', name: 'UI_Design_System.pdf', size: '4.2 MB', type: 'document' }
+        ]
+      })
+      setIsLoading(false)
+    }, 500)
+  }, [jobId])
 
   // Handlers
   const handleInputChange = (e) => {
@@ -54,7 +83,7 @@ export default function RequestCoworker() {
     }))
   }
 
-  // Mock File Upload Handler
+  // File Upload Handlers
   const handleFileUpload = (e) => {
     const uploadedFiles = Array.from(e.target.files).map(file => ({
       id: Math.random().toString(36).substr(2, 9),
@@ -79,11 +108,19 @@ export default function RequestCoworker() {
   // Submit Handler
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Submitting Co-worker Request:', formData)
-    // Here you would normally send the data to your backend.
+    console.log(`Updating Sub-Job [${jobId}]:`, formData)
+    // Here you would normally send the PUT/PATCH request to your backend.
     
-    // Redirect back to My Projects after submission
-    navigate('/freelancer/dashboard/my-jobs')
+    // Redirect back to My Posted Collabs after submission
+    navigate('/freelancer/dashboard/posted-collabs')
+  }
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-white">
+        <p className="text-sm font-bold text-gray-500 uppercase tracking-wider animate-pulse">Loading Job Details...</p>
+      </div>
+    )
   }
 
   return (
@@ -96,14 +133,14 @@ export default function RequestCoworker() {
           onClick={() => navigate(-1)} 
           className="flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-black transition-colors w-fit mb-2"
         >
-          <ArrowLeft size={16} /> Back to Projects
+          <ArrowLeft size={16} /> Back to Posted Jobs
         </button>
 
         {/* Page Header */}
         <div className="mb-6 border-b border-gray-200 pb-6">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Request a Co-worker</h1>
+          <h1 className="text-3xl font-bold tracking-tight mb-2">Edit Co-worker Request</h1>
           <p className="text-sm text-gray-600 leading-relaxed max-w-2xl">
-            Need help completing a project? Post a sub-job to find a qualified co-worker within the Hadei Network. Define the scope, budget cut (%), and requirements below.
+            Update the scope, budget cut, or requirements for your existing sub-job posting. Changes will be visible to all potential applicants immediately.
           </p>
         </div>
 
@@ -346,13 +383,13 @@ export default function RequestCoworker() {
           <div className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-bold text-gray-500 w-full sm:w-auto">
               <AlertCircle size={14} />
-              <span>Co-workers must be verified Hadei users.</span>
+              <span>Editing this job resets its placement in the feed.</span>
             </div>
             <button 
               type="submit"
               className="w-full sm:w-auto bg-black text-[#F5F216] px-10 py-4 rounded-sm text-sm font-bold hover:bg-gray-800 transition-colors"
             >
-              Submit Request
+              Update Request
             </button>
           </div>
 

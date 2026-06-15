@@ -26,6 +26,13 @@ import ProjectDetails from './pages/freelancer/ProjectDetails'
 import MyProjects from './pages/freelancer/MyProjects'
 import RequestCoworker from './pages/freelancer/RequestCoWorker'
 import FreelancerChats from './pages/freelancer/FreelancerChats'
+import JobStatus from './pages/freelancer/JobStatus'
+import Collaboration from './pages/freelancer/Collaboration'
+import CollaborationDetails from './pages/freelancer/CollaborationDetails'
+import MyPostedCollabs from './pages/freelancer/MyPostedCollabs'
+import EditCoworkerRequest from './pages/freelancer/EditCoworkerRequest'
+import JobApplicants from './pages/freelancer/JobApplicants'
+import ApplicantProfile from './pages/freelancer/ApplicantProfile'
 
 export default function App() {
   return (
@@ -65,6 +72,31 @@ export default function App() {
           <Route path="messages" element={<FreelancerChats />} />
           <Route path="messages/:chatId" element={<FreelancerChats />} />
         </Route>
+      {/* Freelancer Dashboard Routes (Nested) */}
+<Route path="/freelancer/dashboard" element={<FreelancerLayout />}>
+  
+  {/* Automatically redirect the base dashboard path to /home */}
+  <Route index element={<Navigate to="home" replace />} />
+  
+  {/* Main Dashboard Pages */}
+  <Route path="home" element={<FreelancerHome />} />
+  
+  {/* Job Details Page */}
+  <Route path="home/jobs/:id" element={<ProjectDetails />} />
+  <Route path="projects" element={<MyProjects />} />
+  <Route path="projects/request-coworker/:id" element={<RequestCoworker />} />
+<Route path="messages" element={<FreelancerChats />} />
+<Route path="messages/:chatId" element={<FreelancerChats />} />
+<Route path="job-status" element={<JobStatus />} />
+<Route path="collaboration" element={<Collaboration />} />
+<Route path="collaboration/:collabId" element={<CollaborationDetails />} />
+<Route path="posted-collabs" element={<MyPostedCollabs />} />
+<Route path="posted-collabs/edit-collab/:jobId" element={<EditCoworkerRequest />} />
+<Route path="posted-collabs/applicants/:jobId" element={<JobApplicants />} />
+<Route path="posted-collabs/applicants/profile/:applicantID" element={<ApplicantProfile />} />
+
+  
+</Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

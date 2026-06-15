@@ -36,7 +36,7 @@ export default function FreelancerLayout() {
   }, [])
 
   const handleLogout = () => {
-    navigate('/login')
+    navigate('/auth/login')
   }
 
   // --- NAVIGATION LISTS ---
@@ -44,12 +44,12 @@ export default function FreelancerLayout() {
     { id: 'home', icon: Home, path: '/freelancer/dashboard/home', label: 'Home' },
     { id: 'projects', icon: FolderGit2, path: '/freelancer/dashboard/projects', label: 'Projects' },
     { id: 'chats', icon: MessageSquare, path: '/freelancer/dashboard/messages', label: 'Chats' },
-    { id: 'status', icon: Activity, path: '/freelancer/dashboard/status', label: 'Status' },
+    { id: 'status', icon: Activity, path: '/freelancer/dashboard/job-status', label: 'Jobs' },
   ]
 
   const bottomNav = [
-    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/other-jobs', label: 'Discover' },
-    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/my-jobs', label: 'My Jobs' },
+    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/collaboration', label: 'Collab' },
+    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/posted-collabs', label: 'My Jobs' },
     { id: 'wallet', icon: Wallet, path: '/freelancer/dashboard/payments', label: 'Wallet' },
   ]
 
@@ -61,9 +61,9 @@ export default function FreelancerLayout() {
 
   const mobileDrawerNav = [
     { id: 'projects', icon: FolderGit2, path: '/freelancer/dashboard/projects', label: 'Projects' },
-    { id: 'status', icon: Activity, path: '/freelancer/dashboard/status', label: 'Status' },
-    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/other-jobs', label: 'Discover' },
-    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/my-jobs', label: 'My Jobs' },
+    { id: 'status', icon: Activity, path: '/freelancer/dashboard/job-status', label: 'Jobs' },
+    { id: 'other-jobs', icon: Compass, path: '/freelancer/dashboard/collaboration', label: 'Collaborations' },
+    { id: 'my-jobs', icon: Briefcase, path: '/freelancer/dashboard/posted-collabs', label: 'My Jobs' },
     { id: 'wallet', icon: Wallet, path: '/freelancer/dashboard/payments', label: 'Wallet' },
   ]
 
@@ -123,7 +123,7 @@ const isRouteActive = (path) => {
                 title={item.label}
               >
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-3/4 bg-[#F5F216] rounded-r-sm"></div>
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[px] h-3/4 bg-[#F5F216] rounded-r-sm"></div>
                 )}
                 <item.icon 
                   size={18} 
@@ -142,20 +142,20 @@ const isRouteActive = (path) => {
         <div className="flex-1" />
 
         {/* Bottom Navigation Area */}
-        <div className="flex flex-col gap-2 w-full px-2">
+        <div className="flex flex-col gap-1 w-full px-2">
           {bottomNav.map((item) => {
             const isActive = isRouteActive(item.path)
             return (
               <Link 
                 key={item.id} 
                 to={item.path}
-                className={`w-full h-12 flex flex-col items-center justify-center rounded-sm transition-colors relative ${
+                className={`w-full h-12 flex flex-col items-center justify-center rounded-sm transition-colors relative mt-2 ${
                   isActive ? 'bg-[#2A2D31] text-white' : 'text-gray-400 hover:bg-[#222222] hover:text-gray-200'
                 }`}
                 title={item.label}
               >
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-3/4 bg-[#F5F216] rounded-r-sm"></div>
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2  h-3/4 bg-[#F5F216] rounded-r-sm"></div>
                 )}
                 <item.icon 
                   size={18} 
