@@ -33,6 +33,8 @@ import MyPostedCollabs from './pages/freelancer/MyPostedCollabs'
 import EditCoworkerRequest from './pages/freelancer/EditCoworkerRequest'
 import JobApplicants from './pages/freelancer/JobApplicants'
 import ApplicantProfile from './pages/freelancer/ApplicantProfile'
+import Wallet from './pages/freelancer/Wallet'
+import Profile from './pages/freelancer/Profile'
 
 export default function App() {
   return (
@@ -86,6 +88,8 @@ export default function App() {
 <Route path="posted-collabs/edit-collab/:jobId" element={<EditCoworkerRequest />} />
 <Route path="posted-collabs/applicants/:jobId" element={<JobApplicants />} />
 <Route path="posted-collabs/applicants/profile/:applicantID" element={<ApplicantProfile />} />
+<Route path="payments" element={<Wallet />} />
+<Route path="profile" element={<Profile />} />
 
   
 </Route>
